@@ -8,44 +8,7 @@ repository = "https://github.com/algonents/wilhelm_renderer_imgui"
 keywords = ["imgui", "opengl", "graphics", "gui", "gamedev"]
 categories = ["gui", "graphics", "rendering", "game-development"]
 
-exclude = [
-    # ImGui documentation and examples
-    "cpp/imgui/docs/**",
-    "cpp/imgui/examples/**",
-    "cpp/imgui/misc/**",
-    "cpp/imgui/.github/**",
-
-    # ImGui dotfiles
-    "cpp/imgui/.editorconfig",
-    "cpp/imgui/.gitattributes",
-    "cpp/imgui/.gitignore",
-
-    # Unused backends (we only need glfw and opengl3)
-    "cpp/imgui/backends/imgui_impl_allegro5.*",
-    "cpp/imgui/backends/imgui_impl_android.*",
-    "cpp/imgui/backends/imgui_impl_dx9.*",
-    "cpp/imgui/backends/imgui_impl_dx10.*",
-    "cpp/imgui/backends/imgui_impl_dx11.*",
-    "cpp/imgui/backends/imgui_impl_dx12.*",
-    "cpp/imgui/backends/imgui_impl_glut.*",
-    "cpp/imgui/backends/imgui_impl_metal.*",
-    "cpp/imgui/backends/imgui_impl_opengl2.*",
-    "cpp/imgui/backends/imgui_impl_osx.*",
-    "cpp/imgui/backends/imgui_impl_sdl2.*",
-    "cpp/imgui/backends/imgui_impl_sdl3.*",
-    "cpp/imgui/backends/imgui_impl_sdlgpu3*",
-    "cpp/imgui/backends/imgui_impl_sdlrenderer2.*",
-    "cpp/imgui/backends/imgui_impl_sdlrenderer3.*",
-    "cpp/imgui/backends/imgui_impl_vulkan.*",
-    "cpp/imgui/backends/imgui_impl_wgpu.*",
-    "cpp/imgui/backends/imgui_impl_win32.*",
-    "cpp/imgui/backends/sdlgpu3/**",
-    "cpp/imgui/backends/vulkan/**",
-
-    # Build artifacts
-    "target/**",
-    "imgui.ini",
-]
+exclude = ["target", "imgui.ini"]
 
 [dependencies]
 wilhelm_renderer = { path = "../sky-renderer" }
