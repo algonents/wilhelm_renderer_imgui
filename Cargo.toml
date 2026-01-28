@@ -1,0 +1,10 @@
+[package]
+name = "wilhelm_renderer_imgui"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+wilhelm_renderer = { path = "../sky-renderer" }
+
+[build-dependencies]
+cmake = "0.1"
