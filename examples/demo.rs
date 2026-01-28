@@ -7,7 +7,7 @@ use wilhelm_renderer::graphics2d::shapes::{ShapeKind, ShapeRenderable, ShapeStyl
 use wilhelm_renderer_imgui::ImGui;
 
 fn main() {
-    let window = Window::new("ImGui Demo", 800, 600, Color::from_rgb(0.1, 0.1, 0.15));
+    let window = Window::new("Wilhelm Renderer Imgui", 800, 600, Color::from_rgb(0.1, 0.1, 0.15));
     let mut app = App::new(window);
 
     // Add a triangle - use pixel coordinates!
