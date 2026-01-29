@@ -170,6 +170,10 @@ mod ffi {
 
         // Demo window
         pub fn imgui_show_demo_window(p_open: *mut c_int);
+
+        // DPI scaling
+        pub fn imgui_get_dpi_scale(window: *const GLFWwindow) -> c_float;
+        pub fn imgui_apply_dpi_scale(window: *const GLFWwindow);
     }
 }
 
@@ -264,10 +268,13 @@ pub mod col {
 /// Dear ImGui context and safe wrapper
 pub struct ImGui {
     ctx: *mut std::ffi::c_void,
+    window: *const GLFWwindow,
 }
 
 impl ImGui {
     /// Create a new ImGui context and initialize backends for the given GLFW window.
+    ///
+    /// On Windows, this automatically applies DPI scaling to handle high-DPI displays.
     ///
     /// # Arguments
     /// * `window` - Raw GLFW window pointer from `Window::glfw_window_ptr()`
@@ -282,9 +289,30 @@ impl ImGui {
         unsafe {
             ffi::imgui_init_for_glfw(window, if install_callbacks { 1 } else { 0 });
             ffi::imgui_init_for_opengl3(glsl_version.as_ptr());
+
+            // Apply DPI scaling on Windows
+            #[cfg(target_os = "windows")]
+            ffi::imgui_apply_dpi_scale(window);
         }
 
-        Self { ctx }
+        Self { ctx, window }
+    }
+
+    /// Get the DPI scale factor for the window.
+    ///
+    /// Returns the content scale reported by GLFW. On Windows with 150% display scaling,
+    /// this returns 1.5. On standard DPI displays, this returns 1.0.
+    pub fn get_dpi_scale(&self) -> f32 {
+        unsafe { ffi::imgui_get_dpi_scale(self.window) }
+    }
+
+    /// Manually apply DPI scaling.
+    ///
+    /// This scales the ImGui style sizes and rebuilds the font atlas with a scaled font.
+    /// Called automatically on Windows during construction, but can be called manually
+    /// if DPI changes at runtime.
+    pub fn apply_dpi_scale(&self) {
+        unsafe { ffi::imgui_apply_dpi_scale(self.window) }
     }
 
     /// Start a new ImGui frame. Call this at the beginning of your render loop.

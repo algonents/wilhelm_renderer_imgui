@@ -2,6 +2,7 @@
 #include "imgui/imgui.h"
 #include "imgui/backends/imgui_impl_glfw.h"
 #include "imgui/backends/imgui_impl_opengl3.h"
+#include <GLFW/glfw3.h>
 
 extern "C" {
 
@@ -339,6 +340,43 @@ void imgui_show_demo_window(int* p_open) {
     if (p_open && open_ptr) {
         *p_open = open_val ? 1 : 0;
     }
+}
+
+// DPI scaling for Windows high-DPI displays
+float imgui_get_dpi_scale(GLFWwindow* window) {
+    float x_scale, y_scale;
+    glfwGetWindowContentScale(window, &x_scale, &y_scale);
+    return x_scale; // x and y are typically the same on Windows
+}
+
+void imgui_apply_dpi_scale(GLFWwindow* window) {
+    float scale = imgui_get_dpi_scale(window);
+    if (scale <= 0.0f) scale = 1.0f;
+
+    // Scale all style sizes
+    ImGuiStyle& style = ImGui::GetStyle();
+    style.ScaleAllSizes(scale);
+
+    // Rebuild font atlas with scaled font size
+    ImGuiIO& io = ImGui::GetIO();
+    io.Fonts->Clear();
+
+    // Load default font at scaled size (13.0f is ImGui's default font size)
+    float font_size = 13.0f * scale;
+    io.Fonts->AddFontDefault(nullptr);
+
+    // Scale the default font
+    ImFontConfig config;
+    config.SizePixels = font_size;
+    config.OversampleH = 1;
+    config.OversampleV = 1;
+    config.PixelSnapH = true;
+    io.Fonts->Clear();
+    io.Fonts->AddFontDefault(&config);
+    io.Fonts->Build();
+
+    // Set global font scale to 1.0 since we've already scaled the font
+    io.FontGlobalScale = 1.0f;
 }
 
 } // extern "C"
