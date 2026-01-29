@@ -11,7 +11,7 @@ categories = ["gui", "graphics", "rendering", "game-development"]
 exclude = ["target", "imgui.ini"]
 
 [dependencies]
-wilhelm_renderer = "0.2.1"
+wilhelm_renderer = "0.2.2"
 
 [build-dependencies]
 cmake = "0.1"
