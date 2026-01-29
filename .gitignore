@@ -1,2 +1,20 @@
+# Build artifacts
 /target
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# ImGui
 imgui.ini
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Rust
+Cargo.lock
+**/*.rs.bk
