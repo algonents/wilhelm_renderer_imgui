@@ -10,8 +10,17 @@ fn main() {
         .build();
 
     // Add library search path
+    // On Windows with MSVC, CMake puts libraries in build/Debug or build/Release
     println!(
         "cargo:rustc-link-search=native={}/build",
+        dst.display()
+    );
+    println!(
+        "cargo:rustc-link-search=native={}/build/Debug",
+        dst.display()
+    );
+    println!(
+        "cargo:rustc-link-search=native={}/build/Release",
         dst.display()
     );
 
