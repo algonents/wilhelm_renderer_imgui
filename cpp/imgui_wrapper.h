@@ -113,6 +113,10 @@ void imgui_set_next_window_size(float width, float height, int cond);
 // Demo window (useful for testing)
 void imgui_show_demo_window(int* p_open);
 
+// DPI scaling (for Windows high-DPI displays)
+float imgui_get_dpi_scale(GLFWwindow* window);
+void imgui_apply_dpi_scale(GLFWwindow* window);
+
 #ifdef __cplusplus
 }
 #endif
