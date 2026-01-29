@@ -6,6 +6,31 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 wilhelm_renderer_imgui provides Dear ImGui integration for wilhelm_renderer. It bundles Dear ImGui v1.91.8 with GLFW and OpenGL3 backends, compiled as a static library with C FFI wrappers for Rust.
 
+### Intended Use Case
+
+This crate serves as the **GUI chrome layer** for Air Traffic Management (ATM) radar view applications built on wilhelm_renderer. The layered architecture:
+
+```
+┌─────────────────────────────────────────────┐
+│  ATM Radar Application                      │
+├─────────────────────────────────────────────┤
+│  Radar Components    │  UI Chrome           │
+│  (tracks, maps,      │  (panels, dialogs,   │
+│   range rings, etc.) │   menus, settings)   │
+├──────────────────────┴──────────────────────┤
+│  wilhelm_renderer    │  wilhelm_renderer_   │
+│  (OpenGL, geometry,  │  imgui (this crate)  │
+│   shaders, camera)   │                      │
+└─────────────────────────────────────────────┘
+```
+
+- **wilhelm_renderer**: Core rendering (geometry, shaders, camera, OpenGL context)
+- **wilhelm_renderer_imgui**: ImGui glue layer for UI controls and dialogs
+- **Radar components** (future): Track rendering, map layers, data blocks, range rings
+- **ATM application**: Domain logic, data feeds, interaction handling
+
+ImGui handles control panels, settings dialogs, menus, and overlays. Custom radar-specific rendering (tracks, maps, measurement tools) is built directly on wilhelm_renderer for precise control over the critical display elements.
+
 ## Build Commands
 
 ```bash
