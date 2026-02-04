@@ -128,3 +128,37 @@ The wrapper exposes common ImGui widgets:
 - Uses OpenGL 3.3 Core Profile (matching wilhelm_renderer)
 - GLSL version `#version 330`
 - ImGui callbacks can be auto-installed or manual (`install_callbacks` parameter)
+
+## Keyboard Handling
+
+The GLFW backend handles keyboard input through callback chaining, allowing custom GLFW callbacks to coexist with ImGui.
+
+### How It Works
+
+1. **Callback Installation**: When `ImGui::new(window_ptr, true)` is called, the GLFW backend installs `ImGui_ImplGlfw_KeyCallback` and stores any previously registered callback.
+
+2. **Callback Chaining**: On each key event, ImGui first calls the previous user callback (if any), then processes the key itself via `io.AddKeyEvent()`.
+
+3. **Input Capture Query**: Use `want_capture_keyboard()` to check if ImGui wants keyboard input (e.g., a text field is focused).
+
+### Coexisting with Custom Callbacks
+
+Custom GLFW key callbacks do not interfere with ImGui controls. Both receive all key events.
+
+**Option 1: Set callback before ImGui init**
+```rust
+// Your callback set first - ImGui will chain to it
+glfwSetKeyCallback(window, my_key_callback);
+let imgui = ImGui::new(window_ptr, true);
+```
+
+**Option 2: Check capture state in your handler**
+```rust
+// In your input handling:
+if !imgui.want_capture_keyboard() {
+    // Handle your shortcuts (Ctrl+S, etc.)
+}
+// Otherwise ImGui handles it (user typing in InputText, etc.)
+```
+
+This ensures shortcuts like `Ctrl+S` don't trigger while the user is typing in an ImGui text field.
