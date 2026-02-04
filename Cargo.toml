@@ -1,6 +1,6 @@
 [package]
 name = "wilhelm_renderer_imgui"
-version = "0.1.2"
+version = "0.2.0"
 edition = "2021"
 description = "Dear ImGui integration for wilhelm_renderer"
 license = "MIT"
@@ -11,7 +11,7 @@ categories = ["gui", "graphics", "rendering", "game-development"]
 exclude = ["target", "imgui.ini"]
 
 [dependencies]
-wilhelm_renderer = "0.2.2"
+wilhelm_renderer = "0.5.0"
 
 [build-dependencies]
 cmake = "0.1"
