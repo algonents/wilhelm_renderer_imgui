@@ -50,7 +50,7 @@ fn main() {
     });
 
     // ImGui controls
-    app.on_render(move |_renderer| {
+    app.on_render(move |_renderer, _camera| {
         imgui.new_frame();
 
         imgui.begin("Shape Controls", None, 0);
