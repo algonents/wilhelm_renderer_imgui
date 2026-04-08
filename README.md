@@ -8,8 +8,8 @@ Bundles Dear ImGui v1.91.8 with GLFW and OpenGL3 backends, compiled as a static 
 
 ```toml
 [dependencies]
-wilhelm_renderer = "0.2"
-wilhelm_renderer_imgui = "0.1"
+wilhelm_renderer = "0.10"
+wilhelm_renderer_imgui = "0.5"
 ```
 
 ### Build Requirements
@@ -33,13 +33,14 @@ fn main() {
     let mut app = App::new(window);
 
     // Add a triangle
-    app.add_shape(ShapeRenderable::from_shape(
-        400.0, 300.0,
+    let mut triangle = ShapeRenderable::from_shape(
         ShapeKind::Triangle(Triangle::new([
             (-100.0, 50.0), (100.0, 50.0), (0.0, -100.0),
         ])),
         ShapeStyle::fill(Color::from_rgb(0.2, 0.6, 0.9)),
-    ));
+    );
+    triangle.set_position(400.0, 300.0);
+    app.add_shape(triangle);
 
     // Initialize ImGui
     let imgui = ImGui::new(app.window.glfw_window_ptr(), true);
@@ -61,7 +62,7 @@ fn main() {
     });
 
     // ImGui controls
-    app.on_render(move |_| {
+    app.on_render(move |_renderer, _camera| {
         imgui.new_frame();
 
         imgui.begin("Shape Controls", None, 0);
