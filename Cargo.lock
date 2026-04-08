@@ -349,12 +349,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "glam"
-version = "0.30.10"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "19fc433e8437a212d1b6f1e68c7824af3aed907da60afa994e7f542d18d12aa9"
-
-[[package]]
 name = "half"
 version = "2.7.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -954,21 +948,29 @@ checksum = "a28ac98ddc8b9274cb41bb4d9d4d5c425b6020c50c46f25559911905610b4a88"
 
 [[package]]
 name = "wilhelm_renderer"
-version = "0.8.1"
+version = "0.10.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "16aa0f5da62abc19aa57c760096d2ff23640bcfe7afdd16ccacf3f1630acd5b8"
+checksum = "b41d47dd717726c0b685c9a18cd57c983c8f7749d8c0c20bdc2e67e6ed2b6689"
 dependencies = [
- "cmake",
- "glam",
  "image",
+ "wilhelm_renderer_sys",
 ]
 
 [[package]]
 name = "wilhelm_renderer_imgui"
-version = "0.4.1"
+version = "0.5.0"
 dependencies = [
  "cmake",
  "wilhelm_renderer",
+]
+
+[[package]]
+name = "wilhelm_renderer_sys"
+version = "0.10.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "8a7e2c1a719a4e89bbe00e1ae9e1bdb7d3e94e8c91388eb1f91070b5edf83a9f"
+dependencies = [
+ "cmake",
 ]
 
 [[package]]

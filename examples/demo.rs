@@ -17,16 +17,16 @@ fn main() {
     // Add a triangle - use pixel coordinates!
     // Center of 800x600 window is (400, 300)
     // Triangle vertices are relative to the shape position
-    app.add_shape(ShapeRenderable::from_shape(
-        400.0,
-        300.0,
+    let mut triangle = ShapeRenderable::from_shape(
         ShapeKind::Triangle(Triangle::new([
             (-100.0, 50.0),  // bottom left (relative to center)
             (100.0, 50.0),   // bottom right
             (0.0, -100.0),   // top
         ])),
         ShapeStyle::fill(Color::from_rgb(0.2, 0.6, 0.9)),
-    ));
+    );
+    triangle.set_position(400.0, 300.0);
+    app.add_shape(triangle);
 
     // Initialize ImGui
     let imgui = ImGui::new(app.window.glfw_window_ptr(), true);
