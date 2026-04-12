@@ -948,9 +948,9 @@ checksum = "a28ac98ddc8b9274cb41bb4d9d4d5c425b6020c50c46f25559911905610b4a88"
 
 [[package]]
 name = "wilhelm_renderer"
-version = "0.10.0"
+version = "0.11.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "b41d47dd717726c0b685c9a18cd57c983c8f7749d8c0c20bdc2e67e6ed2b6689"
+checksum = "00b7c87ebd63c2371997bff50cb25ddc55872376c6621d4bcaa299e69f145a65"
 dependencies = [
  "image",
  "wilhelm_renderer_sys",
@@ -958,7 +958,7 @@ dependencies = [
 
 [[package]]
 name = "wilhelm_renderer_imgui"
-version = "0.5.0"
+version = "0.5.1"
 dependencies = [
  "cmake",
  "wilhelm_renderer",
