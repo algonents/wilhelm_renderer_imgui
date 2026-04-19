@@ -35,7 +35,7 @@ use std::ptr;
 
 // FFI declarations for the C wrapper
 mod ffi {
-    use std::os::raw::{c_char, c_float, c_int, c_void};
+    use std::os::raw::{c_char, c_float, c_int, c_ulong, c_void};
     use wilhelm_renderer::core::GLFWwindow;
 
     unsafe extern "C" {
@@ -83,6 +83,12 @@ mod ffi {
         ) -> c_int;
         pub fn imgui_input_float(label: *const c_char, v: *mut c_float) -> c_int;
         pub fn imgui_input_int(label: *const c_char, v: *mut c_int) -> c_int;
+        pub fn imgui_input_text(
+            label: *const c_char,
+            buf: *mut c_char,
+            buf_size: c_ulong,
+            flags: c_int,
+        ) -> c_int;
         pub fn imgui_color_edit3(label: *const c_char, col: *mut c_float) -> c_int;
         pub fn imgui_color_edit4(label: *const c_char, col: *mut c_float) -> c_int;
         pub fn imgui_same_line();
@@ -449,6 +455,31 @@ impl ImGui {
     pub fn input_int(&self, label: &str, v: &mut i32) -> bool {
         let label_c = CString::new(label).unwrap();
         unsafe { ffi::imgui_input_int(label_c.as_ptr(), v) != 0 }
+    }
+
+    /// Single-line text input bound to a `String`. Returns true on change.
+    /// The input is capped at 255 bytes; longer existing values are truncated.
+    pub fn input_text(&self, label: &str, value: &mut String) -> bool {
+        const BUF_LEN: usize = 256;
+        let mut buf = [0u8; BUF_LEN];
+        let bytes = value.as_bytes();
+        let n = bytes.len().min(BUF_LEN - 1);
+        buf[..n].copy_from_slice(&bytes[..n]);
+
+        let label_c = CString::new(label).unwrap();
+        let changed = unsafe {
+            ffi::imgui_input_text(
+                label_c.as_ptr(),
+                buf.as_mut_ptr() as *mut std::os::raw::c_char,
+                BUF_LEN as std::os::raw::c_ulong,
+                0,
+            ) != 0
+        };
+        if changed {
+            let new_len = buf.iter().position(|&b| b == 0).unwrap_or(BUF_LEN);
+            *value = String::from_utf8_lossy(&buf[..new_len]).into_owned();
+        }
+        changed
     }
 
     // ---- Widgets: Color ----

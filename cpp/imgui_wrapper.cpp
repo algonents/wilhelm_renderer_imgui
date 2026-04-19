@@ -120,6 +120,11 @@ int imgui_input_int(const char* label, int* v) {
     return ImGui::InputInt(label, v) ? 1 : 0;
 }
 
+int imgui_input_text(const char* label, char* buf, unsigned long buf_size, int flags) {
+    return ImGui::InputText(label, buf, static_cast<size_t>(buf_size),
+                            static_cast<ImGuiInputTextFlags>(flags)) ? 1 : 0;
+}
+
 int imgui_color_edit3(const char* label, float col[3]) {
     return ImGui::ColorEdit3(label, col) ? 1 : 0;
 }

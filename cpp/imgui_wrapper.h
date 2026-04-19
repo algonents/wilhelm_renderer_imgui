@@ -42,6 +42,7 @@ int imgui_slider_float(const char* label, float* v, float v_min, float v_max);
 int imgui_slider_int(const char* label, int* v, int v_min, int v_max);
 int imgui_input_float(const char* label, float* v);
 int imgui_input_int(const char* label, int* v);
+int imgui_input_text(const char* label, char* buf, unsigned long buf_size, int flags);
 int imgui_color_edit3(const char* label, float col[3]);
 int imgui_color_edit4(const char* label, float col[4]);
 void imgui_same_line(void);
