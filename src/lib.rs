@@ -87,6 +87,7 @@ mod ffi {
         pub fn imgui_color_edit4(label: *const c_char, col: *mut c_float) -> c_int;
         pub fn imgui_same_line();
         pub fn imgui_separator();
+        pub fn imgui_separator_text(label: *const c_char);
         pub fn imgui_spacing();
         pub fn imgui_dummy(width: c_float, height: c_float);
         pub fn imgui_indent(indent_w: c_float);
@@ -469,6 +470,14 @@ impl ImGui {
     /// Place next widget on the same line as the previous one.
     pub fn same_line(&self) {
         unsafe { ffi::imgui_same_line() };
+    }
+
+    /// Add a horizontal separator with a centered text label (the line is
+    /// drawn on either side of the text). Useful for titling sections in
+    /// an options window.
+    pub fn separator_text(&self, label: &str) {
+        let c = CString::new(label).unwrap();
+        unsafe { ffi::imgui_separator_text(c.as_ptr()) };
     }
 
     /// Add a horizontal separator.

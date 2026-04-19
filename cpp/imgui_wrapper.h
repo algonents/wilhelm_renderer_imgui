@@ -46,6 +46,7 @@ int imgui_color_edit3(const char* label, float col[3]);
 int imgui_color_edit4(const char* label, float col[4]);
 void imgui_same_line(void);
 void imgui_separator(void);
+void imgui_separator_text(const char* label);
 void imgui_spacing(void);
 void imgui_dummy(float width, float height);
 void imgui_indent(float indent_w);

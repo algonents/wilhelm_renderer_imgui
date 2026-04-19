@@ -136,6 +136,10 @@ void imgui_separator(void) {
     ImGui::Separator();
 }
 
+void imgui_separator_text(const char* label) {
+    ImGui::SeparatorText(label);
+}
+
 void imgui_spacing(void) {
     ImGui::Spacing();
 }
