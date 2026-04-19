@@ -30,6 +30,7 @@ void imgui_opengl3_render_draw_data(void);
 void imgui_io_set_display_size(float width, float height);
 int imgui_io_want_capture_mouse(void);
 int imgui_io_want_capture_keyboard(void);
+void imgui_io_set_config_flags(int flags);
 
 // Basic widgets
 int imgui_begin(const char* name, int* p_open, int flags);

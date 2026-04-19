@@ -61,6 +61,7 @@ mod ffi {
         pub fn imgui_io_set_display_size(width: c_float, height: c_float);
         pub fn imgui_io_want_capture_mouse() -> c_int;
         pub fn imgui_io_want_capture_keyboard() -> c_int;
+        pub fn imgui_io_set_config_flags(flags: c_int);
 
         // Basic widgets
         pub fn imgui_begin(name: *const c_char, p_open: *mut c_int, flags: c_int) -> c_int;
@@ -204,6 +205,19 @@ pub mod window_flags {
     pub const NO_INPUTS: i32 = NO_MOUSE_INPUTS | NO_NAV_INPUTS | NO_NAV_FOCUS;
 }
 
+/// IO config flags for `ImGui::set_config_flags()` (mirrors `ImGuiConfigFlags_*`)
+pub mod config_flags {
+    pub const NONE: i32 = 0;
+    /// Enable keyboard navigation: Tab, arrows, Space/Enter to activate.
+    pub const NAV_ENABLE_KEYBOARD: i32 = 1 << 0;
+    /// Enable gamepad navigation (backend must set `HasGamepad`).
+    pub const NAV_ENABLE_GAMEPAD: i32 = 1 << 1;
+    /// Instruct Dear ImGui to disable mouse inputs and interactions.
+    pub const NO_MOUSE: i32 = 1 << 4;
+    /// Request the backend to not alter mouse cursor shape and visibility.
+    pub const NO_MOUSE_CURSOR_CHANGE: i32 = 1 << 5;
+}
+
 /// Condition flags for `set_next_window_pos()` and `set_next_window_size()`
 pub mod cond {
     pub const NONE: i32 = 0;
@@ -336,6 +350,13 @@ impl ImGui {
     /// Returns true if ImGui wants to capture keyboard input.
     pub fn want_capture_keyboard(&self) -> bool {
         unsafe { ffi::imgui_io_want_capture_keyboard() != 0 }
+    }
+
+    /// OR the given bitmask into `io.ConfigFlags`. Use the constants in
+    /// [`config_flags`] — e.g. `NAV_ENABLE_KEYBOARD` to turn on Dear ImGui's
+    /// built-in keyboard navigation (arrows + Space/Enter inside focused windows).
+    pub fn set_config_flags(&self, flags: i32) {
+        unsafe { ffi::imgui_io_set_config_flags(flags as std::os::raw::c_int) }
     }
 
     // ---- Windows ----

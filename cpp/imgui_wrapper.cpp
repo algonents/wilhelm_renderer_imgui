@@ -66,6 +66,10 @@ int imgui_io_want_capture_keyboard(void) {
     return ImGui::GetIO().WantCaptureKeyboard ? 1 : 0;
 }
 
+void imgui_io_set_config_flags(int flags) {
+    ImGui::GetIO().ConfigFlags |= flags;
+}
+
 // Basic widgets
 int imgui_begin(const char* name, int* p_open, int flags) {
     bool* open_ptr = nullptr;
