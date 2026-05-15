@@ -1,6 +1,9 @@
-//! Dear ImGui integration for wilhelm_renderer
+//! Dear ImGui integration for the wilhelm_renderer stack.
 //!
-//! This crate provides Dear ImGui support on top of wilhelm_renderer.
+//! Sibling crate to `wilhelm_renderer`: both depend on `wilhelm_renderer_sys`
+//! (which bundles GLFW + OpenGL loader), neither depends on the other. The
+//! application combines them by handing the GLFW window pointer obtained from
+//! `wilhelm_renderer` to `ImGui::new`.
 //!
 //! # Example
 //!
@@ -27,8 +30,7 @@
 //! app.run();
 //! ```
 
-pub use wilhelm_renderer;
-pub use wilhelm_renderer::core::GLFWwindow;
+pub use wilhelm_renderer_sys::glfw::GLFWwindow;
 
 use std::ffi::CString;
 use std::ptr;
@@ -36,7 +38,7 @@ use std::ptr;
 // FFI declarations for the C wrapper
 mod ffi {
     use std::os::raw::{c_char, c_float, c_int, c_ulong, c_void};
-    use wilhelm_renderer::core::GLFWwindow;
+    use wilhelm_renderer_sys::glfw::GLFWwindow;
 
     unsafe extern "C" {
         // Context management
