@@ -18,3 +18,6 @@ Thumbs.db
 # Rust
 Cargo.lock
 **/*.rs.bk
+
+# Claude Code local state
+.claude/
