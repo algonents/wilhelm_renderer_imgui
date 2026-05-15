@@ -1,22 +1,46 @@
 # wilhelm_renderer_imgui
 
-Dear ImGui integration for [wilhelm_renderer](https://crates.io/crates/wilhelm_renderer).
+Dear ImGui integration for the [wilhelm_renderer](https://crates.io/crates/wilhelm_renderer) stack.
 
-Bundles Dear ImGui v1.91.8 with GLFW and OpenGL3 backends, compiled as a static library with C FFI wrappers for Rust.
+Bundles Dear ImGui v1.91.8 with the GLFW and OpenGL3 backends, compiled as a static library with C FFI wrappers for Rust.
+
+## Architecture
+
+`wilhelm_renderer_imgui` is a **sibling** of `wilhelm_renderer` — neither depends on the other. Both depend on `wilhelm_renderer_sys`, which bundles GLFW and provides the shared window/OpenGL context. Your application combines them: it asks `wilhelm_renderer` for a window, then hands the GLFW window pointer to `ImGui::new`.
+
+```
+┌─────────────────────────────────────────────────────────────┐
+│                    Application                              │
+├──────────────────────────┬──────────────────────────────────┤
+│   wilhelm_renderer       │   wilhelm_renderer_imgui         │
+│   (App, Window,          │   (Dear ImGui + GLFW/GL3         │
+│    Renderer, Color,      │    backends)                     │
+│    graphics2d)           │                                  │
+├──────────────────────────┴──────────────────────────────────┤
+│   wilhelm_renderer_sys (FFI + bundled GLFW/FreeType/glad)   │
+├─────────────────────────────────────────────────────────────┤
+│   OpenGL (system)                                           │
+└─────────────────────────────────────────────────────────────┘
+```
 
 ## Installation
 
+Add both sibling crates to your `Cargo.toml`:
+
 ```toml
 [dependencies]
-wilhelm_renderer = "0.10"
-wilhelm_renderer_imgui = "0.5"
+wilhelm_renderer = "0.12"
+wilhelm_renderer_imgui = "0.9"
 ```
+
+The two crates must agree on the underlying `wilhelm_renderer_sys` version (they share one statically-linked `libglfw3.a`). The published versions above are pinned to compatible sys versions; if you override either dependency, ensure both transitively pull in the same `wilhelm_renderer_sys`.
 
 ### Build Requirements
 
 - C++ compiler and CMake
 - Linux: `libgl1-mesa-dev`
-- Dear ImGui is bundled, no external dependency needed
+- Dear ImGui is bundled — no external ImGui dependency needed
+- GLFW is supplied by `wilhelm_renderer_sys` — no system GLFW required
 
 ## Usage
 
