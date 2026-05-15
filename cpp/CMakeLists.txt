@@ -31,11 +31,19 @@ add_library(imgui_wrapper STATIC
     ${WRAPPER_SOURCES}
 )
 
+# GLFW include directory is supplied by wilhelm_renderer_sys (single source of truth).
+# The build.rs picks it up from DEP_WILHELM_RENDERER_INCLUDE and passes it here.
+if(NOT DEFINED GLFW_INCLUDE_DIR)
+    message(FATAL_ERROR
+        "GLFW_INCLUDE_DIR not set. This project must be built via cargo so that "
+        "wilhelm_renderer_sys can publish the GLFW include path.")
+endif()
+
 # Include directories
 target_include_directories(imgui_wrapper PRIVATE
     ${CMAKE_CURRENT_SOURCE_DIR}/imgui
     ${CMAKE_CURRENT_SOURCE_DIR}/imgui/backends
-    ${CMAKE_CURRENT_SOURCE_DIR}/glfw/include
+    ${GLFW_INCLUDE_DIR}
 )
 
 # Platform-specific settings

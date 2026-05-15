@@ -3,9 +3,18 @@ use std::env;
 fn main() {
     let target = env::var("TARGET").unwrap();
 
+    // GLFW headers come from wilhelm_renderer_sys (single source of truth for the
+    // GLFW version we link against). This crate's ImGui GLFW backend is compiled
+    // against these headers and calls into the libglfw3.a that sys links statically.
+    let glfw_include = env::var("DEP_WILHELM_RENDERER_INCLUDE").expect(
+        "wilhelm_renderer_sys did not publish DEP_WILHELM_RENDERER_INCLUDE — \
+         require wilhelm_renderer_sys >= 0.10.1.",
+    );
+
     // Build the C++ imgui_wrapper library using CMake
     let dst = cmake::Config::new("cpp")
         .build_target("imgui_wrapper")
+        .define("GLFW_INCLUDE_DIR", &glfw_include)
         .static_crt(true)
         .build();
 
