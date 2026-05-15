@@ -22,8 +22,3 @@ wilhelm_renderer = "0.12.0"
 
 [build-dependencies]
 cmake = "0.1"
-
-# Local development overrides. Remove once the matching versions are published.
-[patch.crates-io]
-wilhelm_renderer = { path = "../wilhelm_renderer" }
-wilhelm_renderer_sys = { path = "../wilhelm_renderer/wilhelm_renderer_sys" }
