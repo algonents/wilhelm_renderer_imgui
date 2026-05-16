@@ -8,6 +8,12 @@ Bundles Dear ImGui v1.91.8 with the GLFW and OpenGL3 backends, compiled as a sta
 
 `wilhelm_renderer_imgui` is a **sibling** of `wilhelm_renderer` — neither depends on the other. Both depend on `wilhelm_renderer_sys`, which bundles GLFW and provides the shared window/OpenGL context. Your application combines them: it asks `wilhelm_renderer` for a window, then hands the GLFW window pointer to `ImGui::new`.
 
+![Component architecture](docs/architecture.png)
+
+The diagram above is platform-scoped to Linux (static library names use the `lib*.a` convention). On Windows MSVC the equivalent artifacts are `glfw3.lib`, `freetype.lib`, and `imgui_wrapper.lib`.
+
+Quick textual view:
+
 ```
 ┌─────────────────────────────────────────────────────────────┐
 │                    Application                              │
