@@ -949,8 +949,7 @@ checksum = "a28ac98ddc8b9274cb41bb4d9d4d5c425b6020c50c46f25559911905610b4a88"
 [[package]]
 name = "wilhelm_renderer"
 version = "0.12.1"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "f8d53e724b59be96297cc2ea86dcdbbd9b79d78d755c4879c6087c7333e0a09b"
+source = "git+https://github.com/algonents/wilhelm_renderer.git?branch=feat%2Fkiosk-validation#77665f9c66e37676eb5cc11a20f630bc8bbb01b1"
 dependencies = [
  "image",
  "wilhelm_renderer_sys",
@@ -968,8 +967,7 @@ dependencies = [
 [[package]]
 name = "wilhelm_renderer_sys"
 version = "0.10.1"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "654f6b790313644f89464193dd60d5d80bbd1d22c3bf7ae27829a04ad99b0c94"
+source = "git+https://github.com/algonents/wilhelm_renderer.git?branch=feat%2Fkiosk-validation#77665f9c66e37676eb5cc11a20f630bc8bbb01b1"
 dependencies = [
  "cmake",
 ]
