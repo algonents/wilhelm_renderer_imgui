@@ -46,11 +46,18 @@ target_include_directories(imgui_wrapper PRIVATE
     ${GLFW_INCLUDE_DIR}
 )
 
+# GL entry points are resolved at runtime (ImGui's embedded GL3 loader), so
+# linking libGL is optional. EGL-only platforms whose Mesa has no GLX/libGL
+# (e.g. Wayland kiosks) can pass -DGLRENDERER_LINK_GL=OFF.
+option(GLRENDERER_LINK_GL "Link against the system libGL" ON)
+
 # Platform-specific settings
 if(UNIX AND NOT APPLE)
     # Linux
-    find_package(OpenGL REQUIRED)
-    target_link_libraries(imgui_wrapper PRIVATE OpenGL::GL)
+    if(GLRENDERER_LINK_GL)
+        find_package(OpenGL REQUIRED)
+        target_link_libraries(imgui_wrapper PRIVATE OpenGL::GL)
+    endif()
 elseif(APPLE)
     # macOS
     find_library(COCOA_LIBRARY Cocoa)
