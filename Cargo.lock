@@ -949,7 +949,7 @@ checksum = "a28ac98ddc8b9274cb41bb4d9d4d5c425b6020c50c46f25559911905610b4a88"
 [[package]]
 name = "wilhelm_renderer"
 version = "0.12.1"
-source = "git+https://github.com/algonents/wilhelm_renderer.git?branch=feat%2Fkiosk-validation#77665f9c66e37676eb5cc11a20f630bc8bbb01b1"
+source = "git+https://github.com/algonents/wilhelm_renderer.git?branch=feat%2Fkiosk-validation#6860cd5f2475c05ca3aa3549035360bf2cd29106"
 dependencies = [
  "image",
  "wilhelm_renderer_sys",
@@ -967,7 +967,7 @@ dependencies = [
 [[package]]
 name = "wilhelm_renderer_sys"
 version = "0.10.1"
-source = "git+https://github.com/algonents/wilhelm_renderer.git?branch=feat%2Fkiosk-validation#77665f9c66e37676eb5cc11a20f630bc8bbb01b1"
+source = "git+https://github.com/algonents/wilhelm_renderer.git?branch=feat%2Fkiosk-validation#6860cd5f2475c05ca3aa3549035360bf2cd29106"
 dependencies = [
  "cmake",
 ]
