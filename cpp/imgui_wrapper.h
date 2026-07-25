@@ -120,6 +120,10 @@ void imgui_show_demo_window(int* p_open);
 float imgui_get_dpi_scale(GLFWwindow* window);
 void imgui_apply_dpi_scale(GLFWwindow* window);
 
+// Explicit UI scale (framework-provided factor; does not read GLFW content
+// scale, which is 1.0 under kiosk compositors like cage)
+void imgui_set_ui_scale(float scale);
+
 #ifdef __cplusplus
 }
 #endif

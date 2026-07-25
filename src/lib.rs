@@ -184,6 +184,7 @@ mod ffi {
         // DPI scaling
         pub fn imgui_get_dpi_scale(window: *const GLFWwindow) -> c_float;
         pub fn imgui_apply_dpi_scale(window: *const GLFWwindow);
+        pub fn imgui_set_ui_scale(scale: c_float);
     }
 }
 
@@ -333,9 +334,26 @@ impl ImGui {
     ///
     /// This scales the ImGui style sizes and rebuilds the font atlas with a scaled font.
     /// Called automatically on Windows during construction, but can be called manually
-    /// if DPI changes at runtime.
+    /// if DPI changes at runtime. To apply a factor that does not come from GLFW's
+    /// content scale, use [`ImGui::set_ui_scale`].
     pub fn apply_dpi_scale(&self) {
         unsafe { ffi::imgui_apply_dpi_scale(self.window) }
+    }
+
+    /// Apply an explicit UI scale factor: scales all style metrics and
+    /// rebuilds the default font at `13 × scale` px.
+    ///
+    /// Unlike [`ImGui::apply_dpi_scale`], the factor comes from the caller —
+    /// use this when GLFW's content scale is not meaningful (e.g. kiosk
+    /// compositors such as cage always report 1.0).
+    ///
+    /// Idempotent: the style is reset to defaults before scaling, so call it
+    /// **before** any style customization. Non-positive or NaN values are
+    /// treated as 1.0. Safe to call immediately after construction (before
+    /// the first frame) or between frames; never call between
+    /// [`ImGui::new_frame`] and [`ImGui::render`].
+    pub fn set_ui_scale(&self, scale: f32) {
+        unsafe { ffi::imgui_set_ui_scale(scale) }
     }
 
     /// Start a new ImGui frame. Call this at the beginning of your render loop.
