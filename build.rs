@@ -11,12 +11,25 @@ fn main() {
          require wilhelm_renderer_sys >= 0.10.1.",
     );
 
+    // GL functions are resolved at runtime by ImGui's embedded GL3 loader;
+    // EGL-only platforms whose Mesa ships no libGL (no GLX) set
+    // GLRENDERER_LINK_GL=OFF to skip the explicit libGL link (same switch as
+    // wilhelm_renderer_sys).
+    println!("cargo:rerun-if-env-changed=GLRENDERER_LINK_GL");
+    let link_gl = !env::var("GLRENDERER_LINK_GL").is_ok_and(|v| {
+        matches!(v.to_ascii_lowercase().as_str(), "0" | "off" | "false" | "no")
+    });
+
     // Build the C++ imgui_wrapper library using CMake
-    let dst = cmake::Config::new("cpp")
+    let mut cmake_config = cmake::Config::new("cpp");
+    cmake_config
         .build_target("imgui_wrapper")
         .define("GLFW_INCLUDE_DIR", &glfw_include)
-        .static_crt(true)
-        .build();
+        .static_crt(true);
+    if !link_gl {
+        cmake_config.define("GLRENDERER_LINK_GL", "OFF");
+    }
+    let dst = cmake_config.build();
 
     // Add library search path
     // On Windows with MSVC, CMake puts libraries in build/Debug or build/Release
@@ -38,7 +51,9 @@ fn main() {
 
     // Platform-specific linking
     if target.contains("linux") {
-        println!("cargo:rustc-link-lib=dylib=GL");
+        if link_gl {
+            println!("cargo:rustc-link-lib=dylib=GL");
+        }
         println!("cargo:rustc-link-lib=dylib=stdc++");
     } else if target.contains("darwin") {
         println!("cargo:rustc-link-lib=framework=OpenGL");

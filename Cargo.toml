@@ -1,6 +1,6 @@
 [package]
 name = "wilhelm_renderer_imgui"
-version = "0.9.0"
+version = "0.10.0"
 edition = "2021"
 description = "Dear ImGui integration for wilhelm_renderer"
 license = "MIT"
@@ -14,11 +14,13 @@ exclude = ["target", "imgui.ini"]
 # Direct dep on the sys crate: we need its opaque `GLFWwindow` type for FFI
 # signatures, and we reuse its bundled GLFW headers (via DEP_WILHELM_RENDERER_INCLUDE)
 # and statically-linked libglfw3 for our ImGui GLFW backend.
-wilhelm_renderer_sys = "=0.10.1"
+# Must resolve to the same wilhelm_renderer_sys version as wilhelm_renderer's
+# pinned dep, or two sys instances collide on links = "wilhelm_renderer".
+wilhelm_renderer_sys = "0.11.0"
 
 [dev-dependencies]
 # The demo example uses the safe rendering API. Library code does not.
-wilhelm_renderer = "0.12.0"
+wilhelm_renderer = "0.13.0"
 
 [build-dependencies]
 cmake = "0.1"
