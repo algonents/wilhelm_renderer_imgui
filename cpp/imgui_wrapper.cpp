@@ -3,6 +3,7 @@
 #include "imgui/backends/imgui_impl_glfw.h"
 #include "imgui/backends/imgui_impl_opengl3.h"
 #include <GLFW/glfw3.h>
+#include <math.h>
 
 extern "C" {
 
@@ -390,6 +391,38 @@ void imgui_apply_dpi_scale(GLFWwindow* window) {
 
     // Set global font scale to 1.0 since we've already scaled the font
     io.FontGlobalScale = 1.0f;
+}
+
+// Explicit UI scale. Unlike imgui_apply_dpi_scale, takes the factor from the
+// caller instead of GLFW's content scale. Idempotent: resets the style to
+// defaults before scaling (ScaleAllSizes is cumulative), so repeated calls
+// don't compound. Safe before the first NewFrame and between frames.
+void imgui_set_ui_scale(float scale) {
+    if (ImGui::GetCurrentContext() == nullptr) return;
+    if (!(scale > 0.0f)) scale = 1.0f;  // also rejects NaN
+
+    ImGuiStyle& style = ImGui::GetStyle();
+    style = ImGuiStyle();  // reset: ScaleAllSizes compounds otherwise
+    style.ScaleAllSizes(scale);
+
+    ImGuiIO& io = ImGui::GetIO();
+    io.Fonts->Clear();
+    ImFontConfig config;
+    config.SizePixels = roundf(13.0f * scale);  // 13 px is ImGui's default
+    config.OversampleH = 1;
+    config.OversampleV = 1;
+    config.PixelSnapH = true;
+    io.Fonts->AddFontDefault(&config);
+    io.Fonts->Build();
+    io.FontGlobalScale = 1.0f;
+
+    // Invalidate the GL backend's copy of the atlas; the next
+    // ImGui_ImplOpenGL3_NewFrame() recreates it (no-op before the first
+    // frame). Deliberately NOT calling CreateFontsTexture here: before the
+    // first frame, CreateDeviceObjects() would create a second texture and
+    // leak the first.
+    if (io.BackendRendererUserData != nullptr)
+        ImGui_ImplOpenGL3_DestroyFontsTexture();
 }
 
 } // extern "C"
